@@ -30,8 +30,9 @@ jobs:
       - name: Tag image 
         run: docker tag ${{ secrets.ECR_REPO }}:latest ${{ secrets.ECR_REPOSITORY_URI}}/${{ secrets.ECR_REPO }}:latest
       - name: Push Image to ECR
-        run: docker push {{ secrets.ECR_REPOSITORY_URI}}:latest
-        #run: docker push dunieskiotano/tekshow-reactjs-app:latest   
+        run: docker push ${{ secrets.ECR_REPOSITORY_URI}}/${{ secrets.ECR_REPO }}:latest
+       
+       
 
 # # deploy
 #   deploy: 
