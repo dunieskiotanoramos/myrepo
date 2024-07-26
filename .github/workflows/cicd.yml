@@ -24,7 +24,7 @@ jobs:
     runs-on: amazon-ec2    
     steps:
       - name: Pull image from docker hub
-        run: docker pull dunieskiotano/tekshow-reactjs-app:latest
+        run: docker pull dunieskiotano/tekshow-reactjs-app
       - name: Delete Old Container
         run: docker rm -f reactContainer
       - name: Run docker container
