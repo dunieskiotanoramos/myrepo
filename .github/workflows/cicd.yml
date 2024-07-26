@@ -19,16 +19,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
       - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-      - name: Login to Docker Hub
+        # id: login-ecr
+        # uses: aws-actions/amazon-ecr-login@v2
+      - name: Login to Amazon ECR
         run: aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY_URI}}
         # run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build Docker Image
-        run: docker build -t ${{ secrets.ECR_REPO}} .
+        run: docker build -t ${{ secrets.ECR_REPO }} .
         #run: docker build -t dunieskiotano/tekshow-reactjs-app .
       - name: Tag image 
-        run: docker tag ${{ secrets.ECR_REPO}}:latest {{ secrets.ECR_REPOSITORY_URI}}:latest
+        run: docker tag ${{ secrets.ECR_REPO}}:latest {{ secrets.ECR_REPOSITORY_URI }}:latest
       - name: Push Image to ECR
         run: docker push {{ secrets.ECR_REPOSITORY_URI}}:latest
         #run: docker push dunieskiotano/tekshow-reactjs-app:latest   
