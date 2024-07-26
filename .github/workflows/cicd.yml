@@ -13,20 +13,25 @@ jobs:
       - name: Checkout Source
         uses: actions/checkout@v3
       - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 730179040732.dkr.ecr.us-east-1.amazonaws.com
+        # run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build Docker Image
-        run: docker build -t dunieskiotano/tekshow-reactjs-app .
-      - name: Publish image to docker hub
-        run: docker push dunieskiotano/tekshow-reactjs-app:latest   
+        run: docker build -t tekshow-repo .
+        #run: docker build -t dunieskiotano/tekshow-reactjs-app .
+      - name: Tag image 
+        run: docker tag tekshow-repo:latest 730179040732.dkr.ecr.us-east-1.amazonaws.com/tekshow-repo:latest
+      - name: Push Image to ECR
+        run: docker push 730179040732.dkr.ecr.us-east-1.amazonaws.com/tekshow-repo:latest
+        #run: docker push dunieskiotano/tekshow-reactjs-app:latest   
 
-# deploy
-  deploy: 
-    needs: build
-    runs-on: amazon-ec2    
-    steps:
-      - name: Pull image from docker hub
-        run: docker pull dunieskiotano/tekshow-reactjs-app
-      - name: Delete Old Container
-        run: docker rm -f reactContainer
-      - name: Run docker container
-        run: docker run -d -p 3000:80 --name reactContainer dunieskiotano/tekshow-reactjs-app  
+# # deploy
+#   deploy: 
+#     needs: build
+#     runs-on: amazon-ec2    
+#     steps:
+#       - name: Pull image from docker hub
+#         run: docker pull dunieskiotano/tekshow-reactjs-app
+#       - name: Delete Old Container
+#         run: docker rm -f reactContainer
+#       - name: Run docker container
+#         run: docker run -d -p 3000:80 --name reactContainer dunieskiotano/tekshow-reactjs-app  
