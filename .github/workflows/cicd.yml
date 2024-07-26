@@ -25,13 +25,13 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: tekshow-repo  # Change this to your repository name
+          IMAGE_TAG: latest
         run: |
           # Build the Docker image
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
 
           # Push the Docker image to ECR
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-       
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG      
        
 
 # deploy
@@ -40,8 +40,8 @@ jobs:
     runs-on: amazon-ec2    
     steps:
       - name: Pull image from Amazon ECR
-        run: docker pull 730179040732.dkr.ecr.us-east-1.amazonaws.com/tekshow-repo:latest        
+        run: docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG        
       - name: Delete Old Container
         run: docker rm -f reactContainer
       - name: Run docker container
-        run: docker run -d -p 3000:80 --name reactContainer 730179040732.dkr.ecr.us-east-1.amazonaws.com/tekshow-repo
+        run: docker run -d -p 3000:80 --name reactContainer $ECR_REGISTRY/$ECR_REPOSITORY
