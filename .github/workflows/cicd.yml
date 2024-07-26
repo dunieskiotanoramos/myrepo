@@ -40,7 +40,7 @@ jobs:
     runs-on: amazon-ec2    
     steps:
       - name: Pull image from Amazon ECR
-        run: docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG        
+        run: docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG      
       - name: Delete Old Container
         run: docker rm -f reactContainer
       - name: Run docker container
