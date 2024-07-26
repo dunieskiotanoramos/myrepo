@@ -1,34 +1,30 @@
 name: CICD
-on: 
+
+on:
   push:
-    branches: 
+    branches:
       - main
 
-# jobs
 jobs:
-  build: 
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source
         uses: actions/checkout@v3
       - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD}}
-      - name: Build Docker Image 
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Docker Image
         run: docker build -t dunieskiotano/tekshow-reactjs-app .
-      - name: Push Docker Image to Docker Hub
-        run: docker push dunieskiotano/tekshow-reactjs-app:latest
+      - name: Publish image to docker hub
+        run: docker push dunieskiotano/tekshow-reactjs-app:latest   
 
   deploy: 
     needs: build
-    runs-on: amazon-ec2
+    runs-on: amazon-ec2    
     steps:
-      - name: Pull image from Docker Hub
+      - name: Pull image from docker hub
         run: docker pull dunieskiotano/tekshow-reactjs-app:latest
       - name: Delete Old Container
         run: docker rm -f reactContainer
-      - name: Run New Dockercontainer
-        run: docker run -d -p 3000:80 --name reactContainer dunieskiotano/tekshow-reactjs-app
-        
-
-  
-         
+      - name: Run docker container
+        run: docker run -d -p 3000:80 --name reactContainer dunieskiotano/tekshow-reactjs-app   
