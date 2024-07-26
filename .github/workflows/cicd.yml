@@ -54,5 +54,5 @@ jobs:
       - name: Delete Old Container
         run: docker rm -f reactContainer
       - name: Run docker container
-        run: docker run -d -p 3000:80 --name reactContainer $ECR_REGISTRY/$ECR_REPOSITORY
+        run: docker run -d -p 3000:80 --name reactContainer 730179040732.dkr.ecr.us-east-1.amazonaws.com/tekshow-repo:latest
         
