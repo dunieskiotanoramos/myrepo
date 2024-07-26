@@ -30,7 +30,7 @@ jobs:
       - name: Tag image 
         run: docker tag ${{ secrets.ECR_REPO }}:latest ${{ secrets.ECR_REPOSITORY_URI}}/${{ secrets.ECR_REPO }}:latest
       - name: Push Image to ECR
-        run: docker push ${{ secrets.ECR_REPOSITORY_URI}}/${{ secrets.ECR_REPO }}:latest
+        run: docker push 730179040732.dkr.ecr.us-east-1.amazonaws.com/tekshow-repo:latest
        
        
 
